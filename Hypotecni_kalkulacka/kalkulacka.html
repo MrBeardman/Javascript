@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="kalkulacka.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,700&display=swap"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <section class="header">
+      <header class="nav">
+        <a href="" class="logo"> <img src="/assets/calculator.svg" alt="" /></a>
+      </header>
+    </section>
+
+    <section class="title">
+      <div class="bubble">
+        <h1>Vítej v hypoteční kalkulačce</h1>
+        <p>
+          Pojdmě se spolu podívat,<br />
+          co si můžete dovolit
+        </p>
+      </div>
+    </section>
+
+    <section class="form">
+      <div class="left">
+        <form action="" class="calculator">
+          <table name="table_left" id="table_left">
+            <tr>
+              <td>
+                <label for="price">Kolik si chci půjčit: (Kč)</label><br />
+                <input
+                  type="number"
+                  onChange="calculate()"
+                  id="price"
+                  name="price"
+                  value="10000"
+                  min="10000"
+                  class="parameter" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="rate">Jaký dostanu úrok: (v %)</label><br />
+                <input
+                  type="number"
+                  onChange="calculate()"
+                  id="rate"
+                  name="rate"
+                  value="6"
+                  min="1"
+                  class="parameter" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="length">Jak dlouho budu splácet: (Roky)</label
+                ><br />
+                <input
+                  type="number"
+                  onChange="calculate()"
+                  id="length"
+                  name="length"
+                  value="12"
+                  min="30"
+                  class="parameter" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="interval_select">Jak často budu splácet:</label
+                ><br />
+                <select
+                  class="interval_select"
+                  onChange="calculate()"
+                  name="interval_select"
+                  id="interval_select">
+                  <option
+                    id="interval_option"
+                    class="interval_option"
+                    value="12">
+                    Měsíční (12)
+                  </option>
+                  <option
+                    id="interval_option"
+                    class="interval_option"
+                    value="1">
+                    Roční (1)
+                  </option>
+                  <option
+                    id="interval_option"
+                    class="interval_option"
+                    value="2">
+                    Půlroční (2)
+                  </option>
+                  <option
+                    id="interval_option"
+                    class="interval_option"
+                    value="4">
+                    Čtvrtletní (4)
+                  </option>
+                  <option
+                    id="interval_option"
+                    class="interval_option"
+                    value="3">
+                    Čtyřměsíční (3)
+                  </option>
+                  <option
+                    id="interval_option"
+                    class="interval_option"
+                    value="6">
+                    Dvouměsíční (5)
+                  </option>
+                  <option
+                    id="interval_option"
+                    class="interval_option"
+                    value="365">
+                    Denní (365)
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button
+                  type="button"
+                  onclick="calculate()"
+                  value="0"
+                  class="button">
+                  Výpočet
+                </button>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      <div class="right">
+        <table name="table_right" id="table_right">
+          <tr>
+            <td>
+              <label for="monthly_payment">Měsíčně budu splácet: (Kč)</label
+              ><br />
+              <input
+                type="number"
+                name="monthly_payment"
+                id="monthly_payment"
+                value="5"
+                class="parameter" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="total_payment">Celkem zaplatím: (Kč)</label><br />
+              <input
+                type="number"
+                name="total_payment"
+                id="total_payment"
+                value="6"
+                class="parameter" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="rate_payment">Zaplacené úroky: (Kč)</label><br />
+              <input
+                type="number"
+                name="rate_payment"
+                id="rate_payment"
+                value="7"
+                class="parameter" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a name="calendar_link">Splátkový kalendář</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </section>
+  </body>
+  <script src="/kalkulacka.js"></script>
+</html>
