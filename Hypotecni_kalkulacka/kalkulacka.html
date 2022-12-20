@@ -4,32 +4,32 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Hypoteční kalkulačka</title>
     <link rel="stylesheet" href="kalkulacka.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,700&display=swap"
       rel="stylesheet" />
   </head>
   <body>
+    <div role="preloader" id="preloader">
+      <div class="spinner"></div>
+    </div>
     <section class="header">
       <header class="nav">
-        <a href="" class="logo"> <img src="/assets/calculator.svg" alt="" /></a>
+        <a href="" class="logo"> <img src="/assets/calculator.svg" alt="calculator logo"/></a>
       </header>
     </section>
 
     <section class="title">
-      <div class="bubble">
-        <h1>Vítej v hypoteční kalkulačce</h1>
-        <p>
-          Pojdmě se spolu podívat,<br />
-          co si můžete dovolit
-        </p>
-      </div>
+        <h1>Vítejte v hypoteční kalkulačce</h1>
+        <button class="bubble" onclick="scrollDown('form')"> Pojdmě se spolu podívat,<br/>
+          co si můžete dovolit</button>
     </section>
 
-    <section class="form">
+    <section role="form" class="form">
       <div class="left">
         <form action="" class="calculator">
           <table name="table_left" id="table_left">
@@ -131,10 +131,10 @@
               <td>
                 <button
                   type="button"
-                  onclick="calculate()"
+                  onclick="calculate(); scrollDown('splatkovy_kalendar_section');"
                   value="0"
                   class="button">
-                  Výpočet
+                  Spočítat kalendář
                 </button>
               </td>
             </tr>
@@ -153,7 +153,7 @@
                 name="monthly_payment"
                 id="monthly_payment"
                 value="5"
-                class="parameter" />
+                class="parameter" readonly />
             </td>
           </tr>
           <tr>
@@ -164,7 +164,7 @@
                 name="total_payment"
                 id="total_payment"
                 value="6"
-                class="parameter" />
+                class="parameter" readonly />
             </td>
           </tr>
           <tr>
@@ -175,13 +175,23 @@
                 name="rate_payment"
                 id="rate_payment"
                 value="7"
-                class="parameter" />
+                class="parameter" readonly/>
             </td>
           </tr>
+        </table>
+       
+      </div>
+    </section>
+    <section role="table" class="splatkovy_kalendar_section">
+      <div class="splatkovy_kalendar_div">
+        <h1 class="kalendar_heading">Splátkový kalendář</h1>
+        <table class="splatkovy_kalendar">
           <tr>
-            <td>
-              <a name="calendar_link">Splátkový kalendář</a>
-            </td>
+            <th>Splátka č.</th>
+            <th>Splátka</th>  
+            <th>Úrok(CZK)</th>
+            <th>Umor(CZK)</th>
+            <th>Úvěr(CZK)</th>
           </tr>
         </table>
       </div>

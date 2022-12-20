@@ -1,65 +1,121 @@
-// declare initial values
-let velikostPujcky = 0;
-let urok = 0;
-let delkaSplatek = 0;
-let frekvenceSplatek = 0;
-
-// get final input fields
+//* show values already calculated
+window.onload = calculate;
+// *get final input fields
 const poleMesicniSplatka = document.getElementById("monthly_payment");
 const poleCelkemZaplaceno = document.getElementById("total_payment");
 const poleZaplaceneUroky = document.getElementById("rate_payment");
 
-//funkce na zaokrouhlovani
+// *function for rounding numbers
 function zaokrouhlit(number) {
   let zaokrouhlit = Math.round((number + Number.EPSILON) * 100) / 100;
   return zaokrouhlit;
 }
-// get initial values and calculate
+
+// *get initial values and calculate
 function calculate() {
-  velikostPujcky = document.getElementById("price").value;
-  urok = document.getElementById("rate").value;
-  delkaSplatek = document.getElementById("length").value;
-  frekvenceSplatek = document.getElementById("interval_select").value;
-  console.log("velikost půjčky " + velikostPujcky);
-  //get decimal from procentage
-  console.log("frekvenceSplatek " + delkaSplatek);
 
-  let urokovaMira = urok / 100;
-  console.log("urokova míra " + urokovaMira);
+  //*remove all rows if exists
+  let splatkovyKalendar = document.querySelector(".splatkovy_kalendar");
+  if(splatkovyKalendar.querySelectorAll("tr:not(:first-child)")){
+    let tableRows = splatkovyKalendar.querySelectorAll("tr:not(:first-child)");
+    tableRows.forEach(tr => tr.remove());
+  }
+//* link elements
+  let velikostPujcky = document.getElementById("price").value;
+  let urok = document.getElementById("rate").value;
+  let dobaSplatnosti = document.getElementById("length").value;
+  let pocetSplatek = document.getElementById("interval_select").value;
 
-  let miraPravidelneSplatka = urokovaMira / delkaSplatek;
+  //* kalkulovat úrokovou míru
+  let urokovaMira = urok / 100 / pocetSplatek;
 
-  console.log("miraPravidelneSplatka " + miraPravidelneSplatka);
+   //* kalkulovat pravidelnou splátku
+  let miraPravidelneSplatka = urokovaMira / dobaSplatnosti;
+
+  //*kalkulovat diskotní faktor
   let diskontiFaktor = 1 / (1 + urokovaMira);
 
-  console.log("diskontiFaktor " + diskontiFaktor);
-  let diskontiFaktorNaPocetSplatek = Math.pow(diskontiFaktor, delkaSplatek);
+  //*kalkulovat diskotní faktor na počet splátek
+  let diskontiFaktorNaPocetSplatek = Math.pow(diskontiFaktor, dobaSplatnosti);
 
-  console.log("diskontiFaktorNaPocetSplatek " + diskontiFaktorNaPocetSplatek);
-
+//*kalkulovat roční anuitu
   let rocniAnuita =
     (urokovaMira * velikostPujcky) / (1 - diskontiFaktorNaPocetSplatek);
-  let intervalAnuita = rocniAnuita / frekvenceSplatek;
-  let celkemZaplaceno = rocniAnuita * delkaSplatek;
 
-  poleMesicniSplatka.setAttribute("value", zaokrouhlit(intervalAnuita));
+    //*kalkulovat interval Anuity
+  let intervalAnuita = rocniAnuita / pocetSplatek;
+
+  //*kalkulovat celkem zaplaceno
+  let celkemSplatek = dobaSplatnosti * pocetSplatek;
+ //*kalkulovat splátku
+  let splatka = (urokovaMira * velikostPujcky) / (1- Math.pow(diskontiFaktor, celkemSplatek))
+ //*kalkulovat úroyk celkem
+  let celkemUrok = (splatka * celkemSplatek) - velikostPujcky;
+   //*kalkulovat celkem zaplaceno
+  let celkemZaplaceno =  splatka * celkemSplatek;
+  //* set values to fields
+  poleMesicniSplatka.setAttribute("value", zaokrouhlit(splatka));
   poleCelkemZaplaceno.setAttribute("value", zaokrouhlit(celkemZaplaceno));
   poleZaplaceneUroky.setAttribute(
     "value",
-    zaokrouhlit(celkemZaplaceno - velikostPujcky)
+    zaokrouhlit(celkemUrok)
   );
+  // * define initial stav dluhu
+    let stavDluhu = velikostPujcky;
+    //* iterate over how many payments the clietn will make
+  for (let index = 1; index <= celkemSplatek; index++) {
+
+    //*define single payment and calculate it
+      let splatka =
+      (urokovaMira * velikostPujcky) /
+      (1 - Math.pow(diskontiFaktor, celkemSplatek));
+
+    let splatkaRound = zaokrouhlit(splatka);
+    let urokKalendar = stavDluhu * urokovaMira;
+    let umorPredchozi = splatka - urokKalendar;
+    stavDluhu -= umorPredchozi
+    //addRows(splatkaRound,urok,umor,stavDluhu);
+    let row = document.createElement('tr');
+    for (let i = 1; i <= 5; i++) {
+      let data = row.appendChild(document.createElement('td'));
+      if (i === 1) data.innerHTML = [index];
+      if (i === 2) data.innerHTML = splatkaRound;
+      if (i === 3) data.innerHTML = zaokrouhlit(urokKalendar);
+      if (i === 4) data.innerHTML = zaokrouhlit(umorPredchozi);
+      if (i === 5) data.innerHTML =  zaokrouhlit(stavDluhu)
+    }
+
+    splatkovyKalendar.appendChild(row);
+}
+}
+// scroll button
+function scrollDown(className) {
+  // Get the element to scroll to
+  var element = document.querySelector('.'+className);
+  //Get Header
+  var header = document.querySelector(".header");
+  // Calculate the scroll position
+  var elementPosition = (element.offsetTop - header.offsetHeight) - 25; //substracting 25 so its not sitting right on the navbar
+  // Smoothly scroll to the element
+  window.scrollTo({
+    top: elementPosition,
+    behavior: 'smooth'
+  });
 }
 
-//troll alert
-function troll() {
-  let num = document.querySelector(".button").value;
-  switch (num) {
-    case "0":
-      {
-        alert("Co víc chceš počítat ?");
-        num++;
-        document.querySelector(".button").setAttribute("value", num);
-      }
-      break;
+//PRELOADER
+const preloader = document.querySelector('#preloader');
+const fadeEffect = setInterval(() => {
+  // if we don't set opacity 1 in CSS, then   //it will be equaled to "", that's why we   // check it
+  if (!preloader.style.opacity) {
+    preloader.style.opacity = 1;
   }
-}
+  if (preloader.style.opacity > 0) {
+    preloader.style.opacity -= 0.1;
+  } else {
+    clearInterval(fadeEffect);
+    preloader.remove()
+  }
+}, 10);
+
+window.addEventListener('load', fadeEffect());
