@@ -118,4 +118,26 @@ let fadeEffect = setInterval(() => {
   }
 }, 10);
 
+//function for showing and hiding flot button
+function showHideButton() {
+  // Get the position of the target element
+  var targetPosition = document.getElementById("splatkovy_kalendar").offsetTop;
+
+  // Get the current scroll position of the webpage
+  var currentPosition = window.scrollY;
+
+  // Show the button if the target element is in view
+  if (currentPosition > targetPosition) {
+    document.getElementById("float_button").style.display = "block";
+  }
+  // Hide the button if the target element is not in view
+  else {
+    document.getElementById("float_button").style.display = "none";
+  }
+}
+ // Attach the scroll event to the window object
+ window.addEventListener("scroll", showHideButton);
+ 
+//Attach the load event with fade preloader
 window.addEventListener('load', fadeEffect);
+

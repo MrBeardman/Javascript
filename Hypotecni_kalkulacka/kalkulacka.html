@@ -133,7 +133,7 @@
                   type="button"
                   onclick="calculate(); scrollDown('splatkovy_kalendar_section');"
                   value="0"
-                  class="button">
+                  class="button bubble block">
                   Spočítat kalendář
                 </button>
               </td>
@@ -182,7 +182,7 @@
        
       </div>
     </section>
-    <section role="table" class="splatkovy_kalendar_section">
+    <section role="table" class="splatkovy_kalendar_section" id="splatkovy_kalendar">
       <div class="splatkovy_kalendar_div">
         <h1 class="kalendar_heading">Splátkový kalendář</h1>
         <table class="splatkovy_kalendar">
@@ -194,6 +194,7 @@
             <th>Úvěr(CZK)</th>
           </tr>
         </table>
+        <button class="bubble float" id="float_button" style="display: none;" onclick="scrollDown('splatkovy_kalendar_section')">Zpět Nahoru</button>
       </div>
     </section>
   </body>
