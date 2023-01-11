@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrow Function</title>
+</head>
+<body>
+  
+  <div id ="output"></div>
+  <button id="btn">Click me</button>
+
+</body>
+</html>
+
+
+<script>
+"use strict";
+
+let username = {
+  name: "John",
+  email: "honza.matyas@gmail.com",
+};
+
+//*  *NORMAL FUNCTION IN JS*/
+function nameStringNormal(name, IsTrue) {
+  return `${username.name} (${username.email})`;
+}
+// *ARROW FUNCTION IN JS with no arguments 
+const nameStringArrow1 = () => `${username.name} (${username.email})`;
+
+// *ARROW FUNCTION IN JS with 2 arguments 
+const nameStringArrow2 = (name, IsTrue) =>
+  `${username.name} (${username.email})`;
+
+// *ARROW FUNCTION IN JS with 1 arguments 
+const nameStringArrow3 = (name) => `${username.name}`;
+
+
+
+let users = [
+  {
+    name: "John",
+    email: "honza.matyas@gmail.com",
+  },
+
+  {
+    name: "Frank",
+    email: "frank.sinatra@gmail.com",
+  },
+];
+
+let names = [];
+
+// * With normal funcion
+users.forEach(function(user){
+    names.push(user.name);
+});
+
+// *with arrow function
+users.forEach(user => names.push(user.name));
+
+ let output = document.getElementById('output').innerHTML = names.join(", ");
+
+
+
+ document.getElementById('btn').addEventListener('click', function(){
+ /**
+  * !This.getAttribute doesnt work, becasue "this" keyword is bound by the fucntion block by the way the function is initialized
+  * function getDetails(){
+    return `The button id is ${this.getAttribute('id')}`; 
+  }
+  document.getElementById('output').innerHTML = getDetails()
+  **/
+ 
+  /**
+  * *Using arrow function instead expose the "this" property above it
+  **/
+ const getDetails = () => {
+  console.log(this);
+  return `The button id is ${this.getAttribute('id')}`;
+ }
+
+  document.getElementById('output').innerHTML = getDetails()
+ })
+
+
+
+</script>
