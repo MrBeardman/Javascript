@@ -103,7 +103,6 @@ function scrollDown(className) {
     behavior: 'smooth'
   });
 }
-
 //PRELOADER
 const preloader = document.querySelector('#preloader');
 let fadeEffect = setInterval(() => {
@@ -141,4 +140,3 @@ function showHideButton() {
  
 //Attach the load event with fade preloader
 window.addEventListener('load', fadeEffect);
-
