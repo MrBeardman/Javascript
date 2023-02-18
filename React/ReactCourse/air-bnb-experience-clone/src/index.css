@@ -80,12 +80,22 @@ code {
 }
 .card--status {
   position: absolute;
-  top: 0px;
-  left: 15px;
+  top: 6px;
+  left: 6px;
   background-color: white;
   padding: 5px 10px;
   border-radius: 2px;
 }
 .card--p{
   margin: 5px 0px;
+}
+.cards-list{
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+}
+@media (max-width: 768px) {
+  .cards-list{
+    justify-content: stretch;
+  }
 }
