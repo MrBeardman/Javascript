@@ -1,0 +1,21 @@
+canvas{
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+main{
+width: 100vw;
+color:white;
+Z-index: 99;
+width: 100%;
+margin: epx auto;
+padding: 120px Opx;
+position: absolute;
+display: grid;
+grid-template-columns: repeat (12, 1fr)
+}
+h1, h2, h3, blockquote{
+  font-family: elevon, sans- serif;
+font-weight: 700;
+font-style: normal;
+}
