@@ -323,3 +323,81 @@ console.log(ordersSet[0]); //undefined, all data is uniqe and data does not matt
 ordersSet;
 //ordersSet.clear()
 console.log(ordersSet);
+
+//Example
+const staff = ["Waiter", "Chef", "Waiter", "Manager", "Chef", "Waiter"];
+console.log(staff);
+const staffUniqe = [...new Set(staff)];
+const staffUniqeSet = new Set(staff);
+console.log(staffUniqeSet);
+console.log(staffUniqe);
+console.log(staffUniqeSet.size);
+
+//MAPS
+//Data structure to map keys to values
+//In object, keys are strings
+//In Map Key can have any type, like Objects, or other Maps
+
+const rest = new Map();
+rest.set("name", "Classico Italiano"); //Set the Key and Value
+console.log(rest);
+console.log(rest.set(1, "Firenze, Italy")); //Set Updates and RETURNS the map
+rest.set(2, "Lisbon, Portugal");
+rest
+  .set("categories", ["Italian", "Pizzeria", "Vegetarian", "Organic"])
+  .set("open", 11)
+  .set("close", 23)
+  .set(true, "we are open")
+  .set(false, "we are closed");
+console.log(rest);
+console.log(rest.get(1));
+console.log(rest.get(true));
+
+const time = 21;
+
+console.log(rest.get(time > rest.get("open") && time < rest.get("close")));
+console.log(rest.get("o" + "p" + "e" + "n"));
+
+console.log(rest.has("categories"));
+rest.delete(2);
+rest;
+console.log(rest.size);
+//rest.clear()
+
+rest.set([1, 2, 3, 4], "test");
+console.log(rest);
+
+console.log(rest.get([1, 2, 3, 4])); //undefined these arrays are not the same object in the HEAP, the key is exactly the object in memory. we would have to save it in memory
+const arr = [1, 2, 3, 4];
+rest.set(arr, "test");
+console.log(rest.get(arr));
+// "test"
+//MAP ITERATION
+
+const question = new Map([
+  ["question", "What is the best programing language in the world?"],
+  [1, "c"],
+  [2, "Java"],
+  [3, "Javacript"],
+  ["correct", 3],
+  [true, "Correct 🎉"],
+  [false, "try again! 🛑"],
+]);
+//SAME structure as calling Object.entries()
+console.log(question.get("question"));
+const answer = 3;
+//const answer = Number(prompt("Your answer"));
+// let response = "";
+// for (const [key, value] of question) {
+//   if (typeof key === "number") {
+//     console.log(`Answer ${key}: ${value}`);
+//   }
+//   if ((response = question.get("correct") === answer)) {
+//     console.log(`Answer ${key}: ${value} is ${question.get(response)}`);
+//   }
+// }
+
+//Convert Map to an array
+console.log([...question]);
+
+//Which data to use
