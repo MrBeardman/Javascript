@@ -293,13 +293,11 @@ for (const [key, value] of Object.entries(game.odds)) {
 //   Hummels: 1,
 //   Lewandowski: 2
 // }
-
 let [scorers, { player, goal }] = [
   Object.entries(game.scored),
   Object.entries(game.odds),
 ];
 console.log(scorers);
-
 //SETS
 //NO DUPLICATES ALLOWED
 
@@ -311,6 +309,7 @@ const ordersSet = new Set([
   "Pasta",
   "Pizza",
 ]);
+
 console.log(ordersSet); // {"Pasta", "Pizza", "Rissoto"}
 console.log(new Set("Jonas"));
 console.log(ordersSet.size);
@@ -319,4 +318,8 @@ console.log(ordersSet.has("Pizza"));
 ordersSet.add("Garlic Bread");
 ordersSet.add("Garlic Bread");
 ordersSet.delete("Rissotto");
+console.log(ordersSet);
+console.log(ordersSet[0]); //undefined, all data is uniqe and data does not matter
+ordersSet;
+//ordersSet.clear()
 console.log(ordersSet);
