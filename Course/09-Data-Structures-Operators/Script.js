@@ -449,3 +449,95 @@ for (const [minute, event] of gameEvents) {
     `${minute < 45 ? "[FIRST GALF]" : "[SECOND HALF]"} ${minute}: ${event}`
   );
 }
+
+//WORKING WITH STRIGNS
+
+const airline = "TAP air portugal";
+
+const plane = "A320";
+
+console.log(plane[0]);
+console.log(plane[1]);
+console.log(plane[2]);
+console.log("B737", [0]);
+
+console.log(airline.length);
+console.log("B737".length);
+
+console.log(airline.indexOf("r"));
+console.log(airline.lastIndexOf("r"));
+console.log(airline.indexOf("portugal"));
+console.log(airline.slice(4));
+console.log(airline.slice(4, 7));
+console.log(airline.slice(0, airline.indexOf(" ")));
+console.log(airline.slice(airline.lastIndexOf(" ") + 1)); //+1 to get rid of the initial space
+
+console.log(airline.slice(-2)); //starts counting from the end
+console.log(airline.slice(1, -1));
+
+const checkMiddleSeat = function (seat) {
+  //B and E are middle seats
+  const s = seat.toUpperCase().slice(-1);
+  if (s === "E" || s === "C") console.log(`You get the middle seat ${s}`);
+  else console.log(`${s} is not a middle seat`);
+};
+
+checkMiddleSeat("11B");
+checkMiddleSeat("23C");
+checkMiddleSeat("3E");
+checkMiddleSeat("3e");
+
+console.log(airline.toLocaleLowerCase());
+console.log(airline.toLocaleUpperCase());
+
+const nameCorrector = function (nameInput) {
+  const name = nameInput;
+  const nameLowercase = name.toLocaleLowerCase();
+  const nameCorrect = nameLowercase[0].toUpperCase() + nameLowercase.slice(1);
+  console.log(nameCorrect);
+  return nameCorrect;
+};
+console.log(nameCorrector("KoKoTek"));
+
+//ComparingEmails
+
+const email = "hello@jonas.io";
+const loginEmail = "  Hello@Jonas.Io \n";
+
+// const lowerEmail = loginEmail.toLowerCase();
+// const trimmedEmail = lowerEmail.trim();//Get rid of whitespace
+
+const normalizedEmail = loginEmail.toLowerCase().trim(); //can be done in one step
+console.log(normalizedEmail);
+console.log(email === normalizedEmail);
+
+//Replacing
+
+const priceGB = "288,97£";
+const priceUS = priceGB.replace("£", "$").replace(",", ".");
+console.log(priceUS);
+
+const announcement =
+  "All passegners come to boarding door 23. Boarding door 23!";
+
+console.log(announcement.replaceAll("door", "gate")); //replaces all occurances, not just one
+console.log(announcement.replace(/door/g, "gate")); // /something/g is a regualar expression with a global tag meaning all occurances
+
+const plane1 = "A320neo";
+console.log(plane.includes("A320"));
+console.log(plane.includes("Boeing"));
+console.log(plane.startsWith("Air"));
+
+if (plane1.startsWith("A") && plane1.endsWith("neo"))
+  console.log("This playne is a new Airbus A320");
+
+//Practise exercise
+
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+  if (baggage.includes("gun") || baggage.includes("knife"))
+    console.log("you are nto allowed on board");
+};
+checkBaggage("I have a laptop, some food and a pocket knife");
+checkBaggage("i have some snacks and a gun for protection");
+checkBaggage("Got some socks and a camera");
