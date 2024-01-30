@@ -377,6 +377,7 @@ const question = new Map([
   ["correct", 3],
   [true, "Correct 🎉"],
   [false, "try again! 🛑"],
+  [5, "jsi vocas"],
 ]);
 //SAME structure as calling Object.entries()
 // console.log(question.get("question"));
@@ -624,3 +625,69 @@ for (const flight of flights.split("+")) {
   )})`.padStart(55);
   console.log(output);
 }
+//*FUNCTIONS RETURNING FUCNTIONS
+
+const greet = function (greeting) {
+  return function (name) {
+    console.log(`${greeting} ${name}`);
+  };
+};
+
+const greetWithHey = greet("Hey");
+greetWithHey("Thomas");
+
+greet("Hello")("John");
+
+const greetArr = (greeting) => (name) => console.log(`${greeting} ${name}`);
+
+greetArr("hey")("Jake");
+
+//*THE CALL AN APPLY METHODS
+
+const lufthansa = {
+  airline: "Lufthansa",
+  IataCode: "LH",
+  bookings: [],
+  book(flightNum, name) {
+    console.log(
+      `${name} booked a seat on ${this.airline} flight ${this.IataCode}${flightNum}`
+    );
+    this.bookings.push({
+      flight: `${this.IataCode}${flightNum}`,
+      passangerName: `${name}`,
+    });
+  },
+};
+lufthansa.book(239, "Jan Matyáš");
+lufthansa.book(635, "John Smith");
+
+console.log(lufthansa);
+
+const eurowings = {
+  airline: "Eurowings",
+  IataCode: "EW",
+  bookings: [],
+};
+const book = lufthansa.book;
+
+// book(23, "SARAH williams"); does not work
+
+book.call(eurowings, 23, "Sarah Williams");
+console.log(eurowings);
+book.call(lufthansa, 239, "Mary Cooper");
+console.log(lufthansa);
+
+const swiss = {
+  airline: "Swiss Air Lines",
+  IataCode: "SX",
+  bookings: [],
+};
+
+book.call(swiss, 145, "Miranda Great");
+
+//* APPLY METHOD
+const flightData = [584, "Gerogre Cooper"];
+book.apply(swiss, flightData); // not used anymore
+book.call(swiss, ...flightData); //because we have the spread operator
+
+//*THE BIND METHOD
