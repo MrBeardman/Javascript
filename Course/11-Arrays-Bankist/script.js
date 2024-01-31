@@ -74,3 +74,14 @@ const currencies = new Map([
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+
+let arr = ['a', 'b', 'c', 'd', 'e'];
+
+//Slice(start index, end index ) returns a new array, negative start index start form the end
+console.log(arr.slice(2, 4));
+console.log(arr.slice(-2, 4));
+console.log(arr.slice(-2, 4));
+console.log(arr.slice(-2, -1));
+console.log([...arr]);
+arr.splice(-1);
+console.log(arr);
