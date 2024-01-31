@@ -1,4 +1,97 @@
-"use strict";
+'use strict';
+
+//*interaction with diferenet fucnions with the same object
+const bookings = [];
+// const createBooking = function (
+//   flightNum = 'XX000',
+//   numPassengers = 1,
+//   price = 199 * numPassengers
+// ) {
+//   ES5
+//    numPassengers = numPassengers || 1;
+//   price = price || 1;
+//   const booking = {
+//     flightNum,
+//     numPassengers,
+//     price,
+//   };
+//   console.log(booking);
+//   bookings.push(booking);
+// };
+
+// createBooking('LH123');
+// createBooking('LH123', 2, 800);
+// createBooking('AK456', undefined, 5);
+
+// const flight = 'LH123';
+// const john = {
+//   name: 'Jan Matyas',
+//   passport: 234524234235,
+// };
+
+// const checkIn = function (flightNum, passegner) {
+//   flightNum = 'LH999';
+//   passegner.name = 'Mr. ' + passegner.name;
+//   if (passegner.passport === 234524234235) {
+//     alert('Checked in');
+//   } else {
+//     alert('Wrong Passport!');
+//   }
+// };
+
+// checkIn(flight, john);
+
+// console.log(flight);
+// console.log(john);
+
+// const newPassport = function (person) {
+//   person.passport = Math.trunc(Math.random() * 100000000);
+// };
+// newPassport(john);
+// checkIn(flight, john);
+//*FIRST CLASS VS HIGH-ORDER FUNCTIONS
+//First class funcions means that fucnions are treated as values language wide, its only a CONCEPT
+//Higher order funcions recives another function as an argument and returns a new fucnions or both
+
+const oneWord = function (str) {
+  return str.replace(/ /g, '').toLowerCase();
+};
+
+const upperFirstWord = function (str) {
+  const [first, ...others] = str.split(' ');
+  return [first.toUpperCase(), ...others].join(' ');
+};
+//Higher order funcions
+const transformer = function (str, fn) {
+  console.log(`The original string: ${str}`);
+  console.log(`tranformed string: ${fn(str)}`);
+
+  console.log(`Transformed by: ${fn.name}`);
+};
+// a callback function
+transformer('Javasrcipt is the best!', upperFirstWord);
+transformer('Javasrcipt is the best!', oneWord);
+
+const camelCases = function (str) {
+  const split = str.split(' ');
+  console.log(split);
+  for (const [firstLetter, ...others] of Object.values(split)) {
+    console.log(firstLetter, others);
+  }
+};
+
+camelCases('this word will have every first letter uppercased');
+
+//*FUNCTIONS RETURNING FUNCIONS
+
+const greet = function (greeting) {
+  return function (name) {
+    console.log(`${greeting} ${name}`);
+  };
+};
+
+const greetHey = greet('Hey');
+greetHey('Jonas');
 //*FUNCTIONS RETURNING FUCNTIONS
 
 const greet = function (greeting) {
@@ -7,20 +100,20 @@ const greet = function (greeting) {
   };
 };
 
-const greetWithHey = greet("Hey");
-greetWithHey("Thomas");
+const greetWithHey = greet('Hey');
+greetWithHey('Thomas');
 
-greet("Hello")("John");
+greet('Hello')('John');
 
-const greetArr = (greeting) => (name) => console.log(`${greeting} ${name}`);
+const greetArr = greeting => name => console.log(`${greeting} ${name}`);
 
-greetArr("hey")("Jake");
+greetArr('hey')('Jake');
 
 //*THE CALL AN APPLY METHODS
 
 const lufthansa = {
-  airline: "Lufthansa",
-  IataCode: "LH",
+  airline: 'Lufthansa',
+  IataCode: 'LH',
   bookings: [],
   book(flightNum, name) {
     console.log(
@@ -32,35 +125,35 @@ const lufthansa = {
     });
   },
 };
-lufthansa.book(239, "Jan Matyáš");
-lufthansa.book(635, "John Smith");
+lufthansa.book(239, 'Jan Matyáš');
+lufthansa.book(635, 'John Smith');
 
 console.log(lufthansa);
 
 const eurowings = {
-  airline: "Eurowings",
-  IataCode: "EW",
+  airline: 'Eurowings',
+  IataCode: 'EW',
   bookings: [],
 };
 const book = lufthansa.book;
 
 // book(23, "SARAH williams"); does not work
 
-book.call(eurowings, 23, "Sarah Williams");
+book.call(eurowings, 23, 'Sarah Williams');
 console.log(eurowings);
-book.call(lufthansa, 239, "Mary Cooper");
+book.call(lufthansa, 239, 'Mary Cooper');
 console.log(lufthansa);
 
 const swiss = {
-  airline: "Swiss Air Lines",
-  IataCode: "SX",
+  airline: 'Swiss Air Lines',
+  IataCode: 'SX',
   bookings: [],
 };
 
-book.call(swiss, 145, "Miranda Great");
+book.call(swiss, 145, 'Miranda Great');
 
 //* APPLY METHOD
-const flightData = [584, "Gerogre Cooper"];
+const flightData = [584, 'Gerogre Cooper'];
 book.apply(swiss, flightData); // not used anymore
 book.call(swiss, ...flightData); //because we have the spread operator
 
@@ -69,12 +162,12 @@ book.call(swiss, ...flightData); //because we have the spread operator
 const bookEW = book.bind(eurowings);
 const bookSX = book.bind(swiss);
 const bookLH = book.apply(lufthansa);
-bookEW(83, "Steven Williams");
+bookEW(83, 'Steven Williams');
 console.log(eurowings);
 
 const bookEW23 = book.bind(eurowings, 23);
 
-bookEW23("Micheal Evans");
+bookEW23('Micheal Evans');
 console.log(eurowings);
 
 //* WITH EVENT LISTENERS
@@ -140,33 +233,33 @@ GOOD LUCK 😀
 */
 let promptOptions = [];
 const poll = {
-  question: "What is your favourite programming language?",
-  options: ["0: Javascript", "1: Python", "2: Rust", "3: C++"],
+  question: 'What is your favourite programming language?',
+  options: ['0: Javascript', '1: Python', '2: Rust', '3: C++'],
   answers: new Array(4).fill(0),
   registerNewAnswer() {
     let answer = Number(
       prompt(
-        `${this.question} \n${this.options.join("\n")} \n(Write otpion numer)`
+        `${this.question} \n${this.options.join('\n')} \n(Write otpion numer)`
       )
     );
     console.log(answer);
     if (isNaN(answer)) {
-      alert("This is not a number");
+      alert('This is not a number');
     } else if (answer >= 0 && answer < this.options.length) {
       poll.answers[answer]++;
       console.log(this.answers);
     } else {
-      ("");
-      alert("Number is too big");
+      ('');
+      alert('Number is too big');
     }
     this.displayResults();
-    this.displayResults("string");
+    this.displayResults('string');
   },
-  displayResults(type = "array") {
-    if (type === "array") {
+  displayResults(type = 'array') {
+    if (type === 'array') {
       console.log(this.answers);
-    } else if (type === "string") {
-      console.log(`Poll resutls are: ${this.answers.join(", ")}`);
+    } else if (type === 'string') {
+      console.log(`Poll resutls are: ${this.answers.join(', ')}`);
     }
   },
 };
@@ -175,7 +268,7 @@ const poll = {
 //   .querySelector(".poll")
 //   .addEventListener("click", poll.registerNewAnswer.bind(poll));
 
-poll.displayResults.call({ answers: [5, 2, 3] }, "string");
+poll.displayResults.call({ answers: [5, 2, 3] }, 'string');
 
 // [5, 2, 3]
 // [1, 5, 3, 9, 6, 1]
@@ -183,20 +276,20 @@ poll.displayResults.call({ answers: [5, 2, 3] }, "string");
 //*IMIDIETLY INVOKED FUNCTION EXPRESSIONS(IIFE)
 
 const runOnce = function () {
-  console.log("Tis will run once");
+  console.log('Tis will run once');
 };
 runOnce();
 //IIFE
 (function () {
-  console.log("Tis will run once");
+  console.log('Tis will run once');
 })();
 
 //Works for arrow fucnions
-(() => console.log("Tis will run once"))();
+(() => console.log('Tis will run once'))();
 
 {
   const isPriave = 23;
-  var notPrivate = "Hey Pussy";
+  var notPrivate = 'Hey Pussy';
 }
 //console.log(isPriave); //?Variable is not defined
 console.log(notPrivate);
@@ -265,9 +358,9 @@ GOOD LUCK 😀
 */
 
 (function () {
-  const header = document.querySelector("h1");
-  header.style.color = "red";
-  document.body.addEventListener("click", function () {
-    header.style.color = "blue";
+  const header = document.querySelector('h1');
+  header.style.color = 'red';
+  document.body.addEventListener('click', function () {
+    header.style.color = 'blue';
   });
 })();
