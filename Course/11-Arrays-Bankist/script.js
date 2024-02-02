@@ -1,5 +1,62 @@
 'use strict';
 
+// let arr = ['a', 'b', 'c', 'd', 'e'];
+
+// //Slice(start index, end index ) returns a new array, negative start index start form the end
+// console.log(arr.slice(2, 4));
+// console.log(arr.slice(-2, 4));
+// console.log(arr.slice(-2, 4));
+// console.log(arr.slice(-2, -1));
+// console.log([...arr]);
+// arr.splice(-1);
+// console.log(arr);
+
+// //Reverse mutates the original array
+// const arr2 = ['j', 'i', 'h', 'g', 'f'];
+// console.log(arr2.reverse());
+
+// //Concat
+// const letters = arr.concat(arr2);
+// console.log(letters);
+// console.log([...arr, ...arr2]);
+
+// //Join
+// console.log(letters.join(' - '));
+// const arr = [23, 11, 64];
+// console.log(arr[arr.length - 1]);
+// console.log(arr.slice(-1)[0]);
+// console.log(arr.at(-1));
+// FOR OF VS FOREACH
+// console.log('---FOROF---');
+// for (const movement of movements)
+// for (const [i, movement] of movements.entries()) {
+//   if (movement > 0) {
+//     console.log(`your movement Number ${i + 1} of ${movement}$`);
+//   } else {
+//     console.log(`You movement number ${i + 1} of ${Math.abs(movement)}$`);
+//   }
+// }
+// console.log('---FOREACH---');
+// movements.forEach((mov, i, arr) => {
+//   if (mov > 0) {
+//     console.log(`your movement Number ${i + 1} of ${mov}$`);
+//   } else {
+//     console.log(`You movement number ${i + 1} of ${Math.abs(mov)}$`);
+//   }
+// });
+//Map
+// currencies.forEach((value, key, map) => console.log(`${key} ${value}`));
+//Set
+// const currenciesUniqe = new Set(['GBP', 'USD', 'EUR', 'GBP', 'USD']);
+// console.log(currenciesUniqe);
+// currenciesUniqe.forEach(
+//   (
+//     value,
+//     key,
+//     map // key and value are the same
+//   ) => console.log(`${key} ${value} ${map}`)
+// );
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // BANKIST APP
@@ -72,16 +129,3 @@ const currencies = new Map([
 ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-/////////////////////////////////////////////////
-
-let arr = ['a', 'b', 'c', 'd', 'e'];
-
-//Slice(start index, end index ) returns a new array, negative start index start form the end
-console.log(arr.slice(2, 4));
-console.log(arr.slice(-2, 4));
-console.log(arr.slice(-2, 4));
-console.log(arr.slice(-2, -1));
-console.log([...arr]);
-arr.splice(-1);
-console.log(arr);
