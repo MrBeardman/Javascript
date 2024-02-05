@@ -94,7 +94,7 @@ nav {
   gap: 2rem;
 
   /* NOTE This creates the fade in/out anumation */
-  opacity: 0;
+  /* opacity: 0; */
   transition: all 1s;
 }
 
@@ -120,6 +120,7 @@ nav {
 .balance__value {
   font-size: 4.5rem;
   font-weight: 400;
+  /* animation: slotMachine 1s ease-in-out; each nubmer needs to be in a separate span  */
 }
 
 /* MOVEMENTS */
@@ -127,7 +128,8 @@ nav {
   grid-row: 2 / span 3;
   background-color: #fff;
   border-radius: 1rem;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .movements__row {
@@ -135,6 +137,16 @@ nav {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
+  transition: cubic-bezier(0.23, 1, 0.32, 1);
+  /* NOTE This creates the fade in anumation */
+  opacity: 0;
+  transform: translateX(550px); /* Start off-screen to the right */
+  transition: opacity 0.5s, transform 0.9s linear;
+}
+
+.movements__row.show {
+  opacity: 1;
+  transform: translateX(0); /* Slide in from the right */
 }
 
 .movements__type {
@@ -294,4 +306,26 @@ h2 {
 
 .timer {
   font-weight: 600;
+}
+
+/* Animations */
+@keyframes slotMachine {
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-20px);
+  }
+  40% {
+    transform: translateY(-40px);
+  }
+  60% {
+    transform: translateY(-20px);
+  }
+  80% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }

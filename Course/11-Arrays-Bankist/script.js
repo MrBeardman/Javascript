@@ -1,62 +1,4 @@
 'use strict';
-
-// let arr = ['a', 'b', 'c', 'd', 'e'];
-
-// //Slice(start index, end index ) returns a new array, negative start index start form the end
-// console.log(arr.slice(2, 4));
-// console.log(arr.slice(-2, 4));
-// console.log(arr.slice(-2, 4));
-// console.log(arr.slice(-2, -1));
-// console.log([...arr]);
-// arr.splice(-1);
-// console.log(arr);
-
-// //Reverse mutates the original array
-// const arr2 = ['j', 'i', 'h', 'g', 'f'];
-// console.log(arr2.reverse());
-
-// //Concat
-// const letters = arr.concat(arr2);
-// console.log(letters);
-// console.log([...arr, ...arr2]);
-
-// //Join
-// console.log(letters.join(' - '));
-// const arr = [23, 11, 64];
-// console.log(arr[arr.length - 1]);
-// console.log(arr.slice(-1)[0]);
-// console.log(arr.at(-1));
-// FOR OF VS FOREACH
-// console.log('---FOROF---');
-// for (const movement of movements)
-// for (const [i, movement] of movements.entries()) {
-//   if (movement > 0) {
-//     console.log(`your movement Number ${i + 1} of ${movement}$`);
-//   } else {
-//     console.log(`You movement number ${i + 1} of ${Math.abs(movement)}$`);
-//   }
-// }
-// console.log('---FOREACH---');
-// movements.forEach((mov, i, arr) => {
-//   if (mov > 0) {
-//     console.log(`your movement Number ${i + 1} of ${mov}$`);
-//   } else {
-//     console.log(`You movement number ${i + 1} of ${Math.abs(mov)}$`);
-//   }
-// });
-//Map
-// currencies.forEach((value, key, map) => console.log(`${key} ${value}`));
-//Set
-// const currenciesUniqe = new Set(['GBP', 'USD', 'EUR', 'GBP', 'USD']);
-// console.log(currenciesUniqe);
-// currenciesUniqe.forEach(
-//   (
-//     value,
-//     key,
-//     map // key and value are the same
-//   ) => console.log(`${key} ${value} ${map}`)
-// );
-
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // BANKIST APP
@@ -118,10 +60,6 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
-
 const currencies = new Map([
   ['USD', 'United States dollar'],
   ['EUR', 'Euro'],
@@ -129,3 +67,95 @@ const currencies = new Map([
 ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// Get movements and display them
+const displayMovements = function (movements) {
+  containerMovements.innerHTML = '';
+  movements.forEach((mov, i) => {
+    const transactionType = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `<div class="movements__row">
+      <div class="movements__type movements__type--${transactionType}">${i + 1} ${transactionType} </div>
+      <div class="movements__date">3 days ago</div>
+      <div class="movements__value">${mov}$</div>
+    </div>`;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+    // Add a class to trigger the animation
+    setTimeout(() => {
+      document.querySelectorAll('.movements__row')[i].classList.add('show');
+    }, i * 200);
+  });
+};
+
+displayMovements(account2.movements);
+
+const deposits = movements.filter(mov => mov > 0);
+const withdrawals = movements.filter(mov => mov < 0);
+
+//Get total balance
+
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => {
+    return acc + mov;
+  }, 0);
+  labelBalance.textContent = `${balance}$`;
+};
+calcDisplayBalance(account1.movements);
+
+const calcDisplaySummary = function (movements) {
+  const incomes = movements.filter(mov => mov > 0).reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = movements.filter(mov => mov < 0).reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${out}€`;
+};
+
+calcDisplaySummary(account1.movements);
+//Convert Eur to US dollar
+const eurToUsd = 1.1;
+const movemetsUSD = movements.map(mov => mov * eurToUsd);
+
+// const movementsUSDfor = [];
+// for (const mov of movements) movementsUSDfor.push(mov * eurToUsd);
+// console.log(movementsUSDfor);
+
+const movementsDescriptions = movements.map((mov, i) => {
+  let transactionOp = mov > 0 ? 'deposited' : 'withdrew';
+  return `Movement ${i + 1} you ${transactionOp} ${transactionOp === 'deposited' ? mov : Math.abs(mov)}$`;
+});
+
+// Max
+const max = movements.reduce((acc, mov) => {
+  if (acc > mov) {
+    return acc;
+  } else {
+    return mov;
+  }
+}, movements[0]);
+
+// All the bak deposits
+// const bankDepositSum = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((acc, arr) => acc + arr);
+// we ca use flat and Map together
+const bankDepositSum = accounts.flatMap(acc => acc.movements).reduce((acc, arr) => acc + arr);
+
+// Get deposits in Dollars
+// PIPELINE
+const totalDepositsDollar = movements
+  .filter(mov => mov > 0)
+  .map(mov => mov * eurToUsd)
+  .reduce((acc, mov) => acc + mov, 0);
+
+// Create a username from users name
+const createUsernames = function (accs) {
+  accs.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(item => item[0])
+      .join('');
+  });
+};
+createUsernames(accounts);
