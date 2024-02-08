@@ -1,7 +1,6 @@
 {
   "name": "03",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -13,5 +12,6 @@
   "dependencies": {
     "three": "^0.161.0",
     "vite": "^5.0.12"
-  }
+  },
+  "description": ""
 }
