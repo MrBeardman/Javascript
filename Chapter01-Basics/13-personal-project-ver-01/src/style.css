@@ -1,0 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+.fps {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: auto;
+  font-size: 1em;
+  color: #00ffb8;
+  z-index: 5;
+  user-select: none;
+}
