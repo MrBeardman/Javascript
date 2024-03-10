@@ -14,6 +14,13 @@ const canvas = document.querySelector("canvas.webgl");
 // Scene
 const scene = new THREE.Scene();
 
+// Textures
+
+const textureLoader = new THREE.TextureLoader();
+const bakedShadow = textureLoader.load("/textures/bakedShadow.jpg");
+const simpleShadow = textureLoader.load("/textures/simpleShadow.jpg");
+
+bakedShadow.colorSpace = THREE.SRGBColorSpace;
 /**
  * Lights
  */
@@ -52,6 +59,91 @@ guiDirectionalLight
 
 scene.add(directionalLight);
 directionalLight.castShadow = true;
+
+//Spot Light
+const spotLight = new THREE.SpotLight(0xffffff, 3.6, 10, Math.PI * 0.3);
+spotLight.castShadow = true;
+spotLight.position.set(0, 2, 2);
+scene.add(spotLight.target);
+scene.add(spotLight);
+
+// Helper
+const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
+
+// gui
+const guiSpotLight = gui.addFolder("Spot Light");
+guiSpotLight.add(spotLight, "intensity").min(0).max(3).step(0.001);
+guiSpotLight.add(spotLight.position, "x").min(-5).max(5).step(0.001);
+guiSpotLight.add(spotLight.position, "y").min(-5).max(5).step(0.001);
+guiSpotLight.add(spotLight.position, "z").min(-5).max(5).step(0.001);
+guiSpotLight.add(spotLightCameraHelper, "visible").name("Toggle helper");
+
+//Shadow
+spotLight.shadow.mapSize.width = 1024;
+spotLight.shadow.mapSize.height = 1024;
+spotLight.shadow.camera.fov = 30;
+spotLight.shadow.camera.near = 1;
+spotLight.shadow.camera.far = 2;
+
+// Pointlight
+const pointLight = new THREE.PointLight(0xffff, 2.7);
+scene.add(pointLight);
+pointLight.castShadow = true;
+pointLight.position.set(-1, 1, 0);
+scene.add(pointLight.target);
+scene.add(pointLight);
+
+// Helper
+const pointLightCameraHelper = new THREE.CameraHelper(pointLight.shadow.camera);
+scene.add(pointLightCameraHelper);
+
+// gui
+const guiPointLight = gui.addFolder("Point Light");
+guiPointLight.addColor(pointLight, "color");
+guiPointLight.add(pointLight, "intensity").min(0).max(3).step(0.001);
+guiPointLight.add(pointLight.position, "x").min(-5).max(5).step(0.001);
+guiPointLight.add(pointLight.position, "y").min(-5).max(5).step(0.001);
+guiPointLight.add(pointLight.position, "z").min(-5).max(5).step(0.001);
+guiPointLight.add(pointLightCameraHelper, "visible").name("Toggle helper");
+
+//Shadow
+pointLight.shadow.mapSize.width = 1024;
+pointLight.shadow.mapSize.height = 1024;
+pointLight.shadow.camera.fov = 30;
+pointLight.shadow.camera.near = 1;
+pointLight.shadow.camera.far = 2;
+
+// Hemisphere light
+const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x00ff, 0.3);
+scene.add(hemisphereLight);
+
+// Helper
+// const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight);
+
+// gui
+const guiHemisphereLight = gui.addFolder("Hemisphere Light");
+// guiHemisphereLight.addColor(hemisphereLight, "skyColor");
+// guiHemisphereLight.addColor(hemisphereLight, "groundColor");
+guiHemisphereLight.add(hemisphereLight, "intensity").min(0).max(3).step(0.001);
+guiHemisphereLight
+  .add(hemisphereLight.position, "x")
+  .min(-5)
+  .max(5)
+  .step(0.001);
+guiHemisphereLight
+  .add(hemisphereLight.position, "y")
+  .min(-5)
+  .max(5)
+  .step(0.001);
+guiHemisphereLight
+  .add(hemisphereLight.position, "z")
+  .min(-5)
+  .max(5)
+  .step(0.001);
+// guiHemisphereLight.add(hemisphereLightHelper, "visible").name("Toggle helper");
+
+// Baking shadows
+
 /**
  * Materials
  */
@@ -66,12 +158,28 @@ guiMaterial.add(material, "roughness").min(0).max(1).step(0.001);
  */
 const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material);
 
+// const plane = new THREE.Mesh(
+//   new THREE.PlaneGeometry(5, 5),
+//   new THREE.MeshBasicMaterial({ map: simpleShadow })
+// );
 const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material);
-
 plane.rotation.x = -Math.PI * 0.5;
 plane.position.y = -0.5;
 
 scene.add(sphere, plane);
+
+const sphereShadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(1, 1),
+  new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    transparent: true,
+    alphaMap: simpleShadow,
+  })
+);
+sphereShadow.rotation.x = -Math.PI * 0.5;
+sphereShadow.position.x = plane.position.y + 0.01;
+scene.add(sphereShadow);
+
 sphere.castShadow = true;
 plane.receiveShadow = true;
 /**
@@ -125,7 +233,7 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 //Shadow MAP
-renderer.shadowMap.enabled = true;
+renderer.shadowMap.enabled = false;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 //MipMapping use the power of 2
@@ -177,15 +285,6 @@ guiDirectionalLight
   .add(directionalLightCameraHelper, "visible")
   .name("Toggle helper");
 
-//Spot Light
-const spotLight = new THREE.SpotLight(0xffffff, 3.6, 10, Math.PI * 0.3);
-spotLight.castShadow = true;
-spotLight.position.set(0, 2, 2);
-scene.add(spotLight.target);
-scene.add(spotLight);
-
-const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
-scene.add(spotLightCameraHelper);
 /**
  * Animate
  */
