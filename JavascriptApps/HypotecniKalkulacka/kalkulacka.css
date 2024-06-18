@@ -1,0 +1,230 @@
+:root {
+  --main-color: #34d22c;
+  --bg: #ebebeb;
+  --color: #000000;
+  --border: 0.1rem solid var(--main-color);
+  --font-weight-bold: 700;
+  --font-weight-normal: 400;
+  --font-size-large: 0.8rem;
+  --font-size-normal: 0.5rem;
+  --font-size-smaller: 0.3rem;
+}
+
+* {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  transition: 0.3 linear;
+  scroll-behavior: smooth;
+}
+section {
+  display: flex;
+}
+
+html {
+  font-size: 3rem;
+}
+
+html::-webkit-scrollbar {
+  width: 0.8rem;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 5rem;
+}
+body {
+  background: white;
+}
+
+
+/* HEADER */
+
+.header {
+  background-color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 7%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: var(--border);
+  z-index: 100;
+}
+
+.header .logo img {
+  height: 0.8rem;
+}
+.header .logo:hover {
+  cursor: auto;
+}
+
+/* BODY */
+
+.title, .repayment_calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 7%;
+}
+.bubble {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--main-color);
+  border-radius: 2rem;
+  border: 0.05rem #000 solid;
+  text-align: center;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  padding: 0.2rem;
+  cursor: pointer;
+  font-size: var(--font-size-normal);
+}
+.bubble.float{
+  position: fixed;
+  right: 0px;
+  z-index: 999;
+  top: 50%;
+  transition: all 2s linear;
+}
+
+.bubble.block{
+  display: inline-block;
+}
+.form {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+/* Typography */
+h1{
+  font-size: var(--font-size-large);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+label {
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+}
+
+p {
+  font-size: var(--font-size-smaller);
+  font-weight: var(--font-weight-normal);
+  text-transform: lowercase;
+}
+
+/* TABLE */
+
+.left, .right {
+  margin: 0.2rem;
+  box-shadow: 1px 1px 5px 1px rgb(0 0 0 / 30%);
+  width: 45%;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+}
+.splatkovy_kalendar{
+  font-size: 0.5rem;
+}
+.splatkovy_kalendar td, .splatkovy_kalendar th{
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+.splatkovy_kalendar tr:nth-child(even){
+  background-color: var(--main-color) ;
+}
+.splatkovy_kalendar_section{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  margin-top: 10%;
+}
+table {
+  padding: 0.2rem;
+}
+td, tr {
+  text-align: center;
+}
+label {
+  font-size: var(--font-size-normal);
+}
+input {
+  text-align: center;
+  font-size: 0.6rem;
+  border: 0.01rem var(--main-color) solid;
+  border-radius: 20px;
+  box-shadow: 1px 1px 5px 1px rgb(0 0 0 / 20%);
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  padding-right: 5px;
+  color: #34d22c;
+}
+/*Wokrs only in chrome :( */
+.right input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+/* Media-Queries */
+@media (max-width: 768px) {
+  .left, .right{
+    width: 100%;
+  }
+  .splatkovy_kalendar_div{
+    max-width: 85%;
+    overflow-x: scroll;
+  }
+}
+/*PRELODAER*/
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 9999;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 4px solid #34d22c;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+  transition: opacity 0.01s ease-in-out;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../09-Data-Structures-Operators"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "10-Functions"
+	}
+}
