@@ -169,7 +169,7 @@ plane.position.y = -0.5;
 scene.add(sphere, plane);
 
 const sphereShadow = new THREE.Mesh(
-  new THREE.PlaneGeometry(1, 1),
+  new THREE.PlaneGeometry(1.5, 1.5),
   new THREE.MeshBasicMaterial({
     color: 0x000000,
     transparent: true,
@@ -177,8 +177,9 @@ const sphereShadow = new THREE.Mesh(
   })
 );
 sphereShadow.rotation.x = -Math.PI * 0.5;
-sphereShadow.position.x = plane.position.y + 0.01;
-scene.add(sphereShadow);
+sphereShadow.position.y = plane.position.y + 0.01;
+
+scene.add(sphere, sphereShadow, plane);
 
 sphere.castShadow = true;
 plane.receiveShadow = true;
@@ -292,6 +293,16 @@ const clock = new THREE.Clock();
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  // Update the sphere
+  sphere.position.x = Math.cos(elapsedTime) * 1.5;
+  sphere.position.z = Math.sin(elapsedTime) * 1.5;
+  sphere.position.y = Math.abs(Math.sin(elapsedTime * 3) * 1.5);
+
+  // Update the shadow
+  sphereShadow.position.x = Math.cos(elapsedTime) * 1.5;
+  sphereShadow.position.z = Math.sin(elapsedTime) * 1.5;
+  sphereShadow.material.opacity = 1 - sphere.position.y * 0.3;
 
   // Update controls
   controls.update();
