@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Překvapení</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Image container behind everything */
+      .image-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+      }
+
+      /* Canvas overlay for scratching */
+      #scratchCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      /* Text container is above the canvas */
+      .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        pointer-events: none; /* so clicks pass through if needed */
+        opacity: 0; /* hidden until typed animation starts */
+        transition: opacity 0.3s ease-in;
+        padding: 0 20px;
+      }
+
+      .content h1,
+      .content h2 {
+        color: #fff;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        margin: 20px 0;
+        font-size: 36px;
+        min-height: 44px; /* to reserve space for typed animation if short text */
+      }
+
+      .reset-button {
+        visibility: hidden; /* keeps layout so text won't shift */
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #ffcc00;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        pointer-events: auto; /* allow clicking */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Visible image behind everything -->
+      <div class="image-container">
+        <img id="mainImage" src="Láska1.jpg" alt="My dva" />
+      </div>
+
+      <!-- Scratch-Off Overlay -->
+      <canvas id="scratchCanvas"></canvas>
+
+      <!-- Text container (typewriter effect after scratch) -->
+      <div class="content" id="content">
+        <h1 id="topText"></h1>
+        <h2 id="bottomText"></h2>
+        <button class="reset-button" id="resetButton">Setřít další</button>
+      </div>
+    </div>
+
+    <script>
+      // We store each "slide" with its image and text pair.
+      const slides = [
+        {
+          image: "Láska1.jpg",
+          topText: "Chybíš mi",
+          bottomText: "Miluju tě",
+        },
+        {
+          image: "Láska2.jpg",
+          topText: "Miluju naše",
+          bottomText: "Společné chvíle",
+        },
+        {
+          image: "Láska3.jpg",
+          topText: "Miluju vzpomínky",
+          bottomText: "Které společně tvoříme",
+        },
+      ];
+
+      // References
+      const canvas = document.getElementById("scratchCanvas");
+      const ctx = canvas.getContext("2d");
+      const resetButton = document.getElementById("resetButton");
+      const mainImage = document.getElementById("mainImage");
+      const content = document.getElementById("content");
+      const topTextElement = document.getElementById("topText");
+      const bottomTextElement = document.getElementById("bottomText");
+
+      let currentSlide = 0; // start with 0th slide
+
+      // Adjust brush size based on screen width
+      function getBrushSize() {
+        const width = window.innerWidth;
+        if (width < 600) {
+          return 20; // smaller brush on mobile
+        } else if (width < 1000) {
+          return 30; // medium brush on tablets
+        } else {
+          return 40; // larger brush on desktops
+        }
+      }
+
+      let brushSize = getBrushSize();
+
+      // Make canvas full screen
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      // Initialize overlay
+      function initializeOverlay() {
+        ctx.globalCompositeOperation = "source-over";
+        // Fully opaque black overlay
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Encourage user to scratch
+        ctx.font = "36px Arial";
+        ctx.fillStyle = "#ffcc00";
+        ctx.textAlign = "center";
+        ctx.fillText("Setři mě!", canvas.width / 2, canvas.height / 2);
+      }
+
+      // Load the correct slide data
+      function loadSlide(index) {
+        const slide = slides[index];
+        mainImage.src = slide.image;
+      }
+
+      // Typed text effect for top and bottom text
+      function typeText(element, text, callback) {
+        let index = 0;
+        element.textContent = "";
+
+        function typeChar() {
+          if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeChar, 50);
+          } else if (callback) {
+            callback();
+          }
+        }
+        typeChar();
+      }
+
+      // Show typed texts for the current slide
+      function showTexts() {
+        content.style.opacity = 1; // fade in content container
+        // Clear existing text
+        topTextElement.textContent = "";
+        bottomTextElement.textContent = "";
+
+        // Retrieve text from current slide
+        const { topText, bottomText } = slides[currentSlide];
+
+        typeText(topTextElement, topText, () => {
+          typeText(bottomTextElement, bottomText, () => {
+            // Appear sooner => 1 second after text is done
+            setTimeout(() => {
+              resetButton.style.visibility = "visible";
+            }, 1000);
+          });
+        });
+      }
+
+      // Fade out the overlay, then type text
+      function fadeOutOverlay(callback) {
+        let opacity = 1; // start fully opaque
+        function fade() {
+          opacity -= 0.01; // slow fade-out
+          if (opacity <= 0) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (callback) callback();
+          } else {
+            ctx.fillStyle = `rgba(0, 0, 0, ${opacity})`;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            requestAnimationFrame(fade);
+          }
+        }
+        fade();
+      }
+
+      // Scratch logic
+      let isDrawing = false;
+      let scratchedArea = 0;
+      let prevX = null;
+      let prevY = null;
+
+      function getPosition(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: (e.touches ? e.touches[0].clientX : e.clientX) - rect.left,
+          y: (e.touches ? e.touches[0].clientY : e.clientY) - rect.top,
+        };
+      }
+
+      function scratch(x, y) {
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.beginPath();
+        ctx.arc(x, y, brushSize, 0, Math.PI * 2, true);
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function connectPoints(prevX, prevY, currX, currY) {
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.beginPath();
+        ctx.lineWidth = brushSize * 2;
+        ctx.lineCap = "round";
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(currX, currY);
+        ctx.stroke();
+        ctx.closePath();
+      }
+
+      function calculateScratchedPercentage() {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const totalPixels = imageData.data.length / 4;
+        let scratchedPixels = 0;
+
+        for (let i = 0; i < imageData.data.length; i += 4) {
+          if (imageData.data[i + 3] === 0) scratchedPixels++;
+        }
+        return (scratchedPixels / totalPixels) * 100;
+      }
+
+      function startDrawing(e) {
+        isDrawing = true;
+        const { x, y } = getPosition(e);
+        prevX = x;
+        prevY = y;
+        scratch(x, y);
+      }
+
+      function moveDrawing(e) {
+        if (!isDrawing) return;
+        const { x, y } = getPosition(e);
+        if (prevX !== null && prevY !== null) {
+          connectPoints(prevX, prevY, x, y);
+        }
+        prevX = x;
+        prevY = y;
+
+        scratchedArea = calculateScratchedPercentage();
+        if (scratchedArea > 40) {
+          canvas.removeEventListener("mousemove", moveDrawing);
+          canvas.removeEventListener("touchmove", onTouchMove);
+
+          fadeOutOverlay(() => {
+            // after overlay fade, show typed texts
+            showTexts();
+          });
+        }
+      }
+
+      function endDrawing() {
+        isDrawing = false;
+        prevX = null;
+        prevY = null;
+      }
+
+      // Touch wrapper to prevent default scrolling
+      function onTouchMove(e) {
+        e.preventDefault();
+        moveDrawing(e);
+      }
+
+      // Event Listeners
+      canvas.addEventListener("mousedown", startDrawing);
+      canvas.addEventListener("mousemove", moveDrawing);
+      canvas.addEventListener("mouseup", endDrawing);
+
+      canvas.addEventListener("touchstart", startDrawing);
+      canvas.addEventListener("touchmove", onTouchMove);
+      canvas.addEventListener("touchend", endDrawing);
+
+      // Reset logic: cycle to next slide, reinit overlay, allow new scratch
+      resetButton.addEventListener("click", () => {
+        resetButton.style.visibility = "hidden";
+        scratchedArea = 0;
+        // Move to next slide
+        currentSlide = (currentSlide + 1) % slides.length;
+        loadSlide(currentSlide);
+
+        // Hide typed texts
+        content.style.opacity = 0;
+        topTextElement.textContent = "";
+        bottomTextElement.textContent = "";
+
+        // Reinit overlay
+        initializeOverlay();
+
+        // Reattach scratch events
+        canvas.addEventListener("mousemove", moveDrawing);
+        canvas.addEventListener("touchmove", onTouchMove);
+      });
+
+      // INITIAL LOAD:
+      loadSlide(currentSlide); // show the first slide (image1)
+      initializeOverlay();
+    </script>
+  </body>
+</html>
